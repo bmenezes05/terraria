@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fca6db84708cd6e46a0120b75b3bae10, type: 3}
+  m_Name: TileAtlas
+  m_EditorClassIdentifier: 
+  grass: {fileID: 11400000, guid: 4cce13c37a02a844a93c8e18eb370851, type: 2}
+  dirt: {fileID: 11400000, guid: bbe76fd88d268f843b907f9d04137710, type: 2}
+  stone: {fileID: 11400000, guid: 255671aec82ef904488096e89cf666e6, type: 2}
+  log: {fileID: 11400000, guid: 618b5b94d10d77d48b6042c54a792b18, type: 2}
+  leaf: {fileID: 11400000, guid: 04970db5876a33343a25245c179f10d1, type: 2}
+  tallGrass: {fileID: 11400000, guid: 7076e38e593d2a64bbd1bc9975f74760, type: 2}
+  sand: {fileID: 11400000, guid: 4de919d978b8333499426ca2a3f7ff68, type: 2}
+  snow: {fileID: 11400000, guid: 3ffa70edb09942048bf2e9b6ea0ffbcf, type: 2}
+  forest: {fileID: 11400000, guid: 39323925fc5ae8d449a30cced19be75a, type: 2}
+  coal: {fileID: 11400000, guid: 75300719096ce0149ac5c5c20b0271d3, type: 2}
+  iron: {fileID: 11400000, guid: b441ee66ce626ea48bbb95b87d0205b0, type: 2}
+  gold: {fileID: 11400000, guid: aa9fafedbb61306468f61f57d78f546e, type: 2}
+  diamond: {fileID: 11400000, guid: ceae5681845b5084697646408c9a07a6, type: 2}
