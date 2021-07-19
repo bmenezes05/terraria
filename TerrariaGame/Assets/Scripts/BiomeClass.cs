@@ -9,9 +9,7 @@ public class BiomeClass
 
     public TileAtlas tileAtlas;
 
-    [Header("Noise Settings")]
-    public float terrainFreq = 0.05f;
-    public float caveFreq = 0.05f;
+    [Header("Noise Settings")]    
     public Texture2D caveNoiseTexture;
 
     [Header("Generation Settings")]

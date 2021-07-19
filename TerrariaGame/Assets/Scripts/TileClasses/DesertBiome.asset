@@ -15,7 +15,7 @@ MonoBehaviour:
   grass: {fileID: 11400000, guid: 4de919d978b8333499426ca2a3f7ff68, type: 2}
   dirt: {fileID: 11400000, guid: 4de919d978b8333499426ca2a3f7ff68, type: 2}
   stone: {fileID: 11400000, guid: 4de919d978b8333499426ca2a3f7ff68, type: 2}
-  log: {fileID: 0}
+  log: {fileID: 11400000, guid: b11c5bf354ac1c543b5cb3f527de9cb2, type: 2}
   leaf: {fileID: 0}
   tallGrass: {fileID: 11400000, guid: db19a0de49318df41b5ce152e423dbcd, type: 2}
   sand: {fileID: 0}

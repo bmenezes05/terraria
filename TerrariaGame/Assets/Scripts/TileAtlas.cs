@@ -12,7 +12,7 @@ public class TileAtlas : ScriptableObject
     public TileClass tallGrass;
     public TileClass sand;
     public TileClass snow;
-    public TileClass forest;
+    public TileClass forest;    
 
     [Header("Environment")]
     public TileClass coal;
