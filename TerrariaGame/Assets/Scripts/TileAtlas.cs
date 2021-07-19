@@ -14,10 +14,6 @@ public class TileAtlas : ScriptableObject
     public TileClass snow;
     public TileClass forest;    
 
-    [Header("Environment")]
-    public TileClass coal;
-    public TileClass iron;
-    public TileClass gold;
-    public TileClass diamond;
-
+    [Header("Ores")]
+    public OreClass[] ores;
 }

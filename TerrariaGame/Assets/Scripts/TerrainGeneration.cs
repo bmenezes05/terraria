@@ -34,17 +34,16 @@ public class TerrainGeneration : MonoBehaviour
 
     private void Start()
     {
-        seed = Random.Range(-10000, 10000);
-
-        for (int i = 0; i < ores.Length; i++)
-        {
-            ores[i].spreadTexture = new Texture2D(worldSize, worldSize);
-        }
+        seed = Random.Range(-10000, 10000);        
 
         biomeColors = new Color[biomes.Length];
         for (int i = 0; i < biomes.Length; i++)
         {
             biomeColors[i] = biomes[i].biomeColor;
+            foreach (var ore in biomes[i].ores)
+            {
+                ore.spreadTexture = new Texture2D(worldSize, worldSize);                
+            }            
         }
         
         DrawBiomeMap();
@@ -66,7 +65,7 @@ public class TerrainGeneration : MonoBehaviour
         biomeMap = new Texture2D(worldSize, worldSize);
         for (int x = 0; x < biomeMap.width; x++)
         {
-            for (int y = 0; y < biomeMap.width; y++)
+            for (int y = 0; y < biomeMap.height; y++)
             {                
                 b = Mathf.PerlinNoise((x + seed) * biomeFreq, (seed) * biomeFreq);
                 biomeMap.SetPixel(x, y, biomeGradient.Evaluate(b));
@@ -92,16 +91,17 @@ public class TerrainGeneration : MonoBehaviour
                 else
                     caveNoiseTexture.SetPixel(x, y, Color.black);
 
-                for (int i = 0; i < ores.Length; i++)
+                //GenerateOres
+                for (int i = 0; i < currentBiome.ores.Length; i++)
                 {
-                    ores[i].spreadTexture.SetPixel(x, y, Color.black);
+                    currentBiome.ores[i].spreadTexture.SetPixel(x, y, Color.black);
                     if (currentBiome.ores.Length >= i + 1)
                     {
                         o = Mathf.PerlinNoise((x + seed) * currentBiome.ores[i].frequency, (y + seed) * currentBiome.ores[i].frequency);
                         if (o > currentBiome.ores[i].size)
-                            ores[i].spreadTexture.SetPixel(x, y, Color.white);
+                            currentBiome.ores[i].spreadTexture.SetPixel(x, y, Color.white);
 
-                        ores[i].spreadTexture.Apply();
+                        currentBiome.ores[i].spreadTexture.Apply();
                     }
                 }
             }
@@ -151,14 +151,11 @@ public class TerrainGeneration : MonoBehaviour
                 {
                     tileSprites = currentBiome.tileAtlas.stone.tileSprites;
 
-                    if (ores[0].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[0].maxSpawnHeight)
-                        tileSprites = currentBiome.tileAtlas.coal.tileSprites;
-                    if (ores[1].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[1].maxSpawnHeight)
-                        tileSprites = currentBiome.tileAtlas.iron.tileSprites;
-                    if (ores[2].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[2].maxSpawnHeight)
-                        tileSprites = currentBiome.tileAtlas.gold.tileSprites;
-                    if (ores[3].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[3].maxSpawnHeight)
-                        tileSprites = currentBiome.tileAtlas.diamond.tileSprites;
+                    foreach (var ore in currentBiome.ores)
+                    {                        
+                        if (ore.spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ore.maxSpawnHeight)
+                            tileSprites = ore.tileSprites;
+                    }
                 }
                 else if (y < height - 1)
                 {

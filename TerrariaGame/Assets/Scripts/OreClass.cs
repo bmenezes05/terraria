@@ -4,7 +4,7 @@ using UnityEngine;
 [Serializable]
 public class OreClass
 {
-    public string name;
+    public string name;            
 
     [Range(0, 1)]
     public float frequency;
@@ -15,4 +15,6 @@ public class OreClass
     public int maxSpawnHeight;
 
     public Texture2D spreadTexture;
+    
+    public Sprite[] tileSprites;
 }
