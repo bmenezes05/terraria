@@ -3,24 +3,31 @@ using UnityEngine;
 
 public class TerrainGeneration : MonoBehaviour
 {
+    public PlayerController player;
+    public CamController camera;
+
     [Header("Tile Atlas")]
     public TileAtlas tileAtlas;
+
     public float seed;
     public BiomeClass[] biomes;
 
     [Header("Biomes")]
     public float biomeFreq;
+
     public Gradient biomeGradient;
     public Texture2D biomeMap;
 
     [Header("Generation Settings")]
     public int chunkSize = 16;
+
     public int worldSize = 100;
     public int heightAddition = 25;
     public bool generateCaves = true;
-    
+
     [Header("Noise Settings")]
     public Texture2D caveNoiseTexture;
+
     public float terrainFreq = 0.05f;
     public float caveFreq = 0.05f;
 
@@ -30,11 +37,11 @@ public class TerrainGeneration : MonoBehaviour
     private BiomeClass currentBiome;
     private GameObject[] worldChunks;
     private List<Vector2> worldTiles = new List<Vector2>();
-    private Color[] biomeColors;
+    private Color[] biomeColors;    
 
     private void Start()
     {
-        seed = Random.Range(-10000, 10000);        
+        seed = Random.Range(-10000, 10000);
 
         biomeColors = new Color[biomes.Length];
         for (int i = 0; i < biomes.Length; i++)
@@ -42,15 +49,19 @@ public class TerrainGeneration : MonoBehaviour
             biomeColors[i] = biomes[i].biomeColor;
             foreach (var ore in biomes[i].ores)
             {
-                ore.spreadTexture = new Texture2D(worldSize, worldSize);                
-            }            
+                ore.spreadTexture = new Texture2D(worldSize, worldSize);
+            }
         }
-        
+
         DrawBiomeMap();
         DrawCavesAndOres();
 
         CreateChunks();
         GenerateTerrain();
+
+        camera.Spawn(new Vector3(player.spawnPos.x, player.spawnPos.y, camera.transform.position.z));
+        camera.worldSize = worldSize;
+        player.Spawn();
     }
 
     //private void OnValidate()
@@ -61,17 +72,17 @@ public class TerrainGeneration : MonoBehaviour
 
     public void DrawBiomeMap()
     {
-        float b;        
+        float b;
         biomeMap = new Texture2D(worldSize, worldSize);
         for (int x = 0; x < biomeMap.width; x++)
         {
             for (int y = 0; y < biomeMap.height; y++)
-            {                
+            {
                 b = Mathf.PerlinNoise((x + seed) * biomeFreq, (seed) * biomeFreq);
                 biomeMap.SetPixel(x, y, biomeGradient.Evaluate(b));
             }
         }
-        
+
         biomeMap.Apply();
     }
 
@@ -126,8 +137,8 @@ public class TerrainGeneration : MonoBehaviour
 
     public BiomeClass GetCurrentBiome(int x, int y)
     {
-        if(System.Array.IndexOf(biomeColors, biomeMap.GetPixel(x, y)) >= 0)
-            return biomes[System.Array.IndexOf(biomeColors, biomeMap.GetPixel(x, y))];        
+        if (System.Array.IndexOf(biomeColors, biomeMap.GetPixel(x, y)) >= 0)
+            return biomes[System.Array.IndexOf(biomeColors, biomeMap.GetPixel(x, y))];
 
         return currentBiome;
     }
@@ -142,7 +153,10 @@ public class TerrainGeneration : MonoBehaviour
             for (int y = 0; y <= worldSize; y++)
             {
                 currentBiome = GetCurrentBiome(x, y);
+
                 height = Mathf.PerlinNoise((x + seed) * terrainFreq, seed * terrainFreq) * currentBiome.heightMultiplier + heightAddition;
+                if (x == worldSize / 2)
+                    player.spawnPos = new Vector2(x, height + 1);
 
                 if (y >= height)
                     break;
@@ -152,7 +166,7 @@ public class TerrainGeneration : MonoBehaviour
                     tileSprites = currentBiome.tileAtlas.stone.tileSprites;
 
                     foreach (var ore in currentBiome.ores)
-                    {                        
+                    {
                         if (ore.spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ore.maxSpawnHeight)
                             tileSprites = ore.tileSprites;
                     }
@@ -171,19 +185,19 @@ public class TerrainGeneration : MonoBehaviour
                 {
                     if (caveNoiseTexture.GetPixel(x, y).r > 0.5f)
                     {
-                        PlaceTile(tileSprites, x, y);
+                        PlaceTile(tileSprites, x, y, false);
                     }
                 }
                 else
                 {
-                    PlaceTile(tileSprites, x, y);
+                    PlaceTile(tileSprites, x, y, false);
                 }
 
                 if (y >= height - 1)
                 {
                     int chanceTree = Random.Range(0, currentBiome.treeChance);
                     if (chanceTree == 1 && worldTiles.Contains(new Vector2(x, y)))
-                    {                        
+                    {
                         GenerateTree(Random.Range(currentBiome.minTreeHeight, currentBiome.maxTreeHeight), x, y + 1);
                     }
                     else
@@ -192,7 +206,7 @@ public class TerrainGeneration : MonoBehaviour
                         if (chanceTallGrass == 1 && worldTiles.Contains(new Vector2(x, y)))
                         {
                             if (currentBiome.tileAtlas.tallGrass != null)
-                                PlaceTile(currentBiome.tileAtlas.tallGrass.tileSprites, x, y + 1);
+                                PlaceTile(currentBiome.tileAtlas.tallGrass.tileSprites, x, y + 1, true);
                         }
                     }
                 }
@@ -204,24 +218,24 @@ public class TerrainGeneration : MonoBehaviour
     {
         for (int i = 0; i < treeHeight; i++)
         {
-            PlaceTile(tileAtlas.log.tileSprites, x, y + i);
+            PlaceTile(tileAtlas.log.tileSprites, x, y + i, true);
         }
 
         //generate leaves
-        PlaceTile(tileAtlas.leaf.tileSprites, x, y + treeHeight);
-        PlaceTile(tileAtlas.leaf.tileSprites, x, y + treeHeight + 1);
-        PlaceTile(tileAtlas.leaf.tileSprites, x, y + treeHeight + 2);
+        PlaceTile(tileAtlas.leaf.tileSprites, x, y + treeHeight, true);
+        PlaceTile(tileAtlas.leaf.tileSprites, x, y + treeHeight + 1, true);
+        PlaceTile(tileAtlas.leaf.tileSprites, x, y + treeHeight + 2, true);
 
-        PlaceTile(tileAtlas.leaf.tileSprites, x - 1, y + treeHeight);
-        PlaceTile(tileAtlas.leaf.tileSprites, x - 1, y + treeHeight + 1);
+        PlaceTile(tileAtlas.leaf.tileSprites, x - 1, y + treeHeight, true);
+        PlaceTile(tileAtlas.leaf.tileSprites, x - 1, y + treeHeight + 1, true);
 
-        PlaceTile(tileAtlas.leaf.tileSprites, x + 1, y + treeHeight);
-        PlaceTile(tileAtlas.leaf.tileSprites, x + 1, y + treeHeight + 1);
+        PlaceTile(tileAtlas.leaf.tileSprites, x + 1, y + treeHeight, true);
+        PlaceTile(tileAtlas.leaf.tileSprites, x + 1, y + treeHeight + 1, true);
     }
 
-    public void PlaceTile(Sprite[] tileSprites, int x, int y)
+    public void PlaceTile(Sprite[] tileSprites, int x, int y, bool backgroundElement)
     {
-        if (!worldTiles.Contains(new Vector2Int(x, y)))
+        if (!worldTiles.Contains(new Vector2Int(x, y)) && x >= 0 && x <= worldSize && y >= 0 && y <= worldSize)
         {
             GameObject newTile = new GameObject();
 
@@ -230,15 +244,20 @@ public class TerrainGeneration : MonoBehaviour
             newTile.transform.parent = worldChunks[chunkCoord].transform;
 
             newTile.AddComponent<SpriteRenderer>();
+            if (!backgroundElement)
+            {
+                newTile.AddComponent<BoxCollider2D>();
+                newTile.GetComponent<BoxCollider2D>().size = Vector2.one;
+                newTile.tag = "Ground";
+            }
 
             int spriteIndex = Random.Range(0, tileSprites.Length);
-
             newTile.GetComponent<SpriteRenderer>().sprite = tileSprites[spriteIndex];
+            newTile.GetComponent<SpriteRenderer>().sortingOrder = -5;
             newTile.name = tileSprites[0].name;
             newTile.transform.position = new Vector2(x + 0.5f, y + 0.5f);
 
             worldTiles.Add(newTile.transform.position - (Vector3.one * 0.5f));
         }
     }
-
 }
