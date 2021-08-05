@@ -15,4 +15,5 @@ MonoBehaviour:
   tileName: Forest
   tileSprites:
   - {fileID: 21300000, guid: 44606aa5277d4974b9d0d171058d6ea6, type: 3}
-  rarity: 0
+  inBackground: 0
+  frequency: 0

@@ -258,9 +258,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bdfee162c38bc04b95c6d476117abf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedTile: {fileID: 11400000, guid: 255671aec82ef904488096e89cf666e6, type: 2}
+  mousePos: {x: 0, y: 0}
   moveSpeed: 12
   jumpForce: 12
   onGround: 0
+  hit: 0
+  place: 0
+  spawnPos: {x: 0, y: 0}
+  terrainGenerator: {fileID: 0}
 --- !u!1 &4827574952508561537
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,7 +7,8 @@ public class TileClass : ScriptableObject
     public string tileName;
     public Sprite[] tileSprites;
     public bool inBackground = true;
-    
-    public float rarity;
+
+    [Range(0, 1)]
+    public float frequency;
 
 }

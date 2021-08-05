@@ -15,4 +15,5 @@ MonoBehaviour:
   tileName: Sand
   tileSprites:
   - {fileID: 21300000, guid: 49ed6264e186bf64c8bf3447eb668e4f, type: 3}
-  rarity: 0
+  inBackground: 0
+  frequency: 0

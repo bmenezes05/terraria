@@ -1,10 +1,10 @@
 using System;
 using UnityEngine;
 
-[Serializable]
-public class OreClass
+[CreateAssetMenu(fileName = "Ore", menuName = "Ore")]
+public class OreClass : ScriptableObject
 {
-    public string name;            
+    public string tileName;
 
     [Range(0, 1)]
     public float frequency;
@@ -15,6 +15,6 @@ public class OreClass
     public int maxSpawnHeight;
 
     public Texture2D spreadTexture;
-    
+
     public Sprite[] tileSprites;
 }

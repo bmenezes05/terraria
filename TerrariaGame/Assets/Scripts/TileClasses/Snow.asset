@@ -15,4 +15,5 @@ MonoBehaviour:
   tileName: Snow
   tileSprites:
   - {fileID: 21300000, guid: 5edc3882d39308b4c9d00dbab02afe9e, type: 3}
-  rarity: 0
+  inBackground: 0
+  frequency: 0

@@ -21,7 +21,4 @@ MonoBehaviour:
   sand: {fileID: 0}
   snow: {fileID: 0}
   forest: {fileID: 0}
-  coal: {fileID: 11400000, guid: 75300719096ce0149ac5c5c20b0271d3, type: 2}
-  iron: {fileID: 11400000, guid: b441ee66ce626ea48bbb95b87d0205b0, type: 2}
-  gold: {fileID: 11400000, guid: aa9fafedbb61306468f61f57d78f546e, type: 2}
-  diamond: {fileID: 11400000, guid: ceae5681845b5084697646408c9a07a6, type: 2}
+  ores: []

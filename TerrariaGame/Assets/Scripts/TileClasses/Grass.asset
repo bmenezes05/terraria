@@ -15,4 +15,5 @@ MonoBehaviour:
   tileName: Grass
   tileSprites:
   - {fileID: 21300000, guid: c55b24f02df5e6144a9eb63bbb0017e4, type: 3}
-  rarity: 0
+  inBackground: 0
+  frequency: 0
